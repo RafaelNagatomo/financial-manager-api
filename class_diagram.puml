@@ -1,0 +1,126 @@
+@startuml inventory_mvp.puml
+
+skinparam classAttributeIconSize 0
+
+abstract class BaseEntity {
+  - id: UUID
+  - is_active: boolean
+  - created_at: Date
+  - created_by: User
+  - updated_at: Date
+  - updated_by: User
+  + create()
+  + read()
+  + update()
+  + deactivate()
+}
+
+class TenantEntity extends BaseEntity {
+  - id: UUID
+  - name: string
+  - members: User[]
+  - owner: User
+  + inviteMember(user: User)
+  + removeMember(user: User)
+  + listMembers(): User[]
+  + hasData(): boolean
+  + transferOwnership()
+}
+
+class User {
+  - id: UUID
+  - is_active: boolean
+  - created_at: Date
+  - updated_at: Date
+  - last_login_at: Date
+  - time_zone: string
+  - super_user: boolean
+  - first_name: string
+  - last_name: string
+  - email: string
+  - password: string
+  + createTenant()
+  + changePassword()
+  + forgotPassword()
+  + authenticate()
+  + fullName(): string
+}
+
+class Transaction extends BaseEntity {
+  - tenant: TenantEntity
+  - type: "income" | "expense"
+  - name: string
+  - category: Category
+  - status: "paid" | "unpaid" | "pending" | "canceled"
+  - amount: number
+  - expiration_date: Date
+  - cancel_reason: string
+  - payment_method: "pix" | "cash" | "debit" | "credit"
+  - credit_card: CreditCard
+  - goal: Goal
+  + checkCategory()
+  + assignToGoal(goal: Goal)
+  + cancelTransaction(reason: string)
+  + isExpired(): boolean
+  + handleCreditPayment()
+}
+
+class Category extends BaseEntity {
+  - tenant: TenantEntity
+  - name: string
+  - max_amount: number
+  - start_date: Date
+  - end_date: Date
+  + linkedTransactions(): Transaction[]
+  + isWithinLimit(amount: number): boolean
+}
+
+class Goal extends BaseEntity {
+  - tenant: TenantEntity
+  - name: string
+  - amount_raised: number
+  - goal_amount: number
+  - description: string
+  - image: string
+  - goal_date: Date
+  + createGoalCategory()
+  + calculateAmountRaised()
+  + remainingAmount(): number
+  + isAchieved(): boolean
+}
+
+class CreditCard extends BaseEntity {
+  - tenant: TenantEntity
+  - name: string
+  - brand: string
+  - closing_day: number
+  - due_day: number
+  - limit: number
+  - current_balance: number
+  + payBill(amount: number)
+  + addTransaction(transaction: Transaction)
+  + getAvailableLimit(): number
+  + getInvoice(month: Date): Transaction[]
+  + closeInvoice(month: Date): void
+}
+
+class WishList extends BaseEntity {
+  - tenant: TenantEntity
+  - name: string
+  - description: string
+  - expected_amount: number
+  - is_purchased: boolean
+  + handlePurchased()
+}
+
+User "1" -- "*" TenantEntity : owner
+User "1" -- "*" TenantEntity : member
+TenantEntity "1" -- "*" Transaction
+TenantEntity "1" -- "*" Category
+TenantEntity "1" -- "*" Goal
+TenantEntity "1" -- "*" Wishlist
+TenantEntity "1" -- "*" CreditCard
+Transaction "1" -- "0..1" CreditCard
+Transaction "*" -- "1" Category
+
+@enduml
