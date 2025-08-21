@@ -1,8 +1,8 @@
-import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
-import { AllExceptionsFilter } from './shared/allExceptionsFilter';
-import { ValidationPipe } from '@nestjs/common';
+import { ExceptionFilter, ValidationPipe } from '@nestjs/common';
+import { AllExceptionsFilter } from '@filters/allExceptionsFilter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,7 +19,7 @@ async function bootstrap() {
     }),
   );
 
-  app.useGlobalFilters(new AllExceptionsFilter());
+  app.useGlobalFilters(new AllExceptionsFilter() as ExceptionFilter);
 
   await app.listen(port);
   console.log(`Application is running on PORT: ${port}`);

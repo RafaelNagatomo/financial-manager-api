@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
-import { User } from '../modules/user/infrastructure/userOrm.entity';
+import { User } from '@user/infrastructure/userOrm.entity';
 
 dotenv.config();
 

@@ -11,7 +11,7 @@ import { ValidationError } from 'class-validator';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-  catch(exception: unknown, host: ArgumentsHost) {
+  catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
@@ -30,8 +30,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
       }
     }
 
-    if (Array.isArray((exception as any)?.message)) {
-      const validationErrors = (exception as any).message;
+    if (Array.isArray(exception?.message)) {
+      const validationErrors = exception.message;
 
       message = this.formatValidationErrors(validationErrors);
       status = HttpStatus.BAD_REQUEST;
