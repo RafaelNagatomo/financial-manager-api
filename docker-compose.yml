@@ -7,7 +7,6 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres-db
       TZ: America/Sao_Paulo
-      PGTZ: America/Sao_Paulo
       LANG: en_US.utf8
     ports:
       - "5432:5432"
@@ -31,6 +30,11 @@ services:
       - "4000:4000"
     networks:
       - dev-network
+    command: >
+      sh -c "
+        npx ts-node -r tsconfig-paths/register src/scripts/seed.ts &&
+        npm run start
+      "
 
   pgadmin:
     image: dpage/pgadmin4
