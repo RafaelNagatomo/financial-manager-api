@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
+import { User } from '../modules/user/infrastructure/userOrm.entity';
 
 dotenv.config();
 
@@ -15,11 +16,13 @@ dotenv.config();
         username: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
-        synchronize: false,
+        synchronize: true,
         autoLoadEntities: true,
+        entities: [User],
       }),
       inject: [ConfigService],
     }),
+    TypeOrmModule.forFeature([User]),
   ],
 })
 export class DatabaseModule {}
