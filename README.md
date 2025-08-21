@@ -72,6 +72,7 @@ With Mau, you can deploy your application in just a few clicks, allowing you to 
 
 ## Structure
 
+```
 src/
 ├── config/
 ├── modules/
@@ -94,6 +95,7 @@ src/
 │
 ├── shared/
 └── main.ts
+```
 
 ## Resources
 
