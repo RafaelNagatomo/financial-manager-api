@@ -29,7 +29,8 @@ services:
       - /app/node_modules
     ports:
       - "4000:4000"
-    command: npm run start:dev
+    networks:
+      - dev-network
 
   pgadmin:
     image: dpage/pgadmin4

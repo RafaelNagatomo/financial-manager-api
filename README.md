@@ -70,6 +70,31 @@ $ mau deploy
 
 With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
 
+## Structure
+
+src/
+├── config/
+├── modules/
+│   ├── auth/
+│   │   ├── application/
+│   │   │   ├── dto/
+│   │   │   └── useCases/
+│   │   ├── infrastructure/
+│   │   │   ├── guards/
+│   │   │   └── strategies/
+│   │   └── guards/
+│   │
+│   └── user/
+│       ├── application/
+│       │   ├── dto/
+│       │   └── useCases/
+│       ├── domain/
+│       ├── infrastructure/
+│       └── presentation/
+│
+├── shared/
+└── main.ts
+
 ## Resources
 
 Check out a few resources that may come in handy when working with NestJS:

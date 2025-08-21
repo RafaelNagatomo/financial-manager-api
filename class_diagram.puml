@@ -4,11 +4,11 @@ skinparam classAttributeIconSize 0
 
 abstract class BaseEntity {
   - id: UUID
-  - is_active: boolean
-  - created_at: Date
-  - created_by: User
-  - updated_at: Date
-  - updated_by: User
+  - isActive: boolean
+  - createdAt: Date
+  - createdBy: User 
+  - updatedAt: Date
+  - updatedBy: User
   + create()
   + read()
   + update()
@@ -29,16 +29,17 @@ class TenantEntity extends BaseEntity {
 
 class User {
   - id: UUID
-  - is_active: boolean
-  - created_at: Date
-  - updated_at: Date
-  - last_login_at: Date
-  - time_zone: string
-  - super_user: boolean
-  - first_name: string
-  - last_name: string
+  - isActive: boolean
+  - createdAt: Date
+  - updatedAt: Date
+  - lastLoginAt: Date
+  - timeZone: string
+  - superUser: boolean
+  - firstName: string
+  - lastName: string
   - email: string
   - password: string
+  - refreshToken: string
   + createTenant()
   + changePassword()
   + forgotPassword()
@@ -53,10 +54,10 @@ class Transaction extends BaseEntity {
   - category: Category
   - status: "paid" | "unpaid" | "pending" | "canceled"
   - amount: number
-  - expiration_date: Date
-  - cancel_reason: string
-  - payment_method: "pix" | "cash" | "debit" | "credit"
-  - credit_card: CreditCard
+  - expirationDate: Date
+  - cancelReason: string
+  - paymentMethod: "pix" | "cash" | "debit" | "credit"
+  - paymentByCredit: PaymentByCredit
   - goal: Goal
   + checkCategory()
   + assignToGoal(goal: Goal)
@@ -65,12 +66,21 @@ class Transaction extends BaseEntity {
   + handleCreditPayment()
 }
 
+class PaymentByCredit extends BaseEntity {
+  - tenant: TenantEntity
+  - transaction: Transaction
+  - creditCard: CreditCard
+  - parcelQuantity: number
+  - parcelAmount: number
+  - firstParcel: Date
+}
+
 class Category extends BaseEntity {
   - tenant: TenantEntity
   - name: string
-  - max_amount: number
-  - start_date: Date
-  - end_date: Date
+  - maxAmount: number
+  - startDate: Date
+  - endDate: Date
   + linkedTransactions(): Transaction[]
   + isWithinLimit(amount: number): boolean
 }
@@ -78,11 +88,11 @@ class Category extends BaseEntity {
 class Goal extends BaseEntity {
   - tenant: TenantEntity
   - name: string
-  - amount_raised: number
-  - goal_amount: number
+  - amountRaised: number
+  - goalAmount: number
   - description: string
   - image: string
-  - goal_date: Date
+  - goalDate: Date
   + createGoalCategory()
   + calculateAmountRaised()
   + remainingAmount(): number
@@ -93,10 +103,10 @@ class CreditCard extends BaseEntity {
   - tenant: TenantEntity
   - name: string
   - brand: string
-  - closing_day: number
-  - due_day: number
+  - closingDay: number
+  - dueDay: number
   - limit: number
-  - current_balance: number
+  - currentBalance: number
   + payBill(amount: number)
   + addTransaction(transaction: Transaction)
   + getAvailableLimit(): number
@@ -108,8 +118,8 @@ class WishList extends BaseEntity {
   - tenant: TenantEntity
   - name: string
   - description: string
-  - expected_amount: number
-  - is_purchased: boolean
+  - expectedAmount: number
+  - isPurchased: boolean
   + handlePurchased()
 }
 
