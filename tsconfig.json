@@ -18,12 +18,12 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@config/*": ["./src/shared/config/*"],
-      "@strategies/*": ["./src/shared/infrastructure/strategies/*"],
-      "@filters/*": ["./src/shared/presentation/filters/*"],
-      "@guards/*": ["./src/shared/presentation/guards/*"],
-      "@auth/*": ["./src/modules/auth/*"],
-      "@user/*": ["./src/modules/user/*"],
+      "@config/*": ["src/shared/config/*"],
+      "@strategies/*": ["src/shared/infrastructure/strategies/*"],
+      "@filters/*": ["src/shared/presentation/filters/*"],
+      "@guards/*": ["src/shared/presentation/guards/*"],
+      "@auth/*": ["src/modules/auth/*"],
+      "@user/*": ["src/modules/user/*"],
     },
   }
 }
