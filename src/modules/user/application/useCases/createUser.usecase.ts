@@ -9,7 +9,7 @@ export class CreateUserUseCase {
   constructor(private readonly userRepository: UserRepository) {}
 
   public async validadeEmail(email: string): Promise<void> {
-    const emailAlreadyExists = await this.userRepository.findByEmail(email);
+    const emailAlreadyExists = await this.userRepository.getByEmail(email);
 
     if (emailAlreadyExists) {
       throw new ConflictException('User already exists!');

@@ -15,7 +15,7 @@ export class AuthenticateUserUseCase {
   ) {}
 
   public async validadeUser(email: string): Promise<User> {
-    const userAlreadyExists = await this.userRepository.findByEmail(email);
+    const userAlreadyExists = await this.userRepository.getByEmail(email);
 
     if (!userAlreadyExists) {
       throw new ConflictException('User or password incorrect!');
