@@ -3,8 +3,8 @@ import { User } from "@user/domain/user.entity";
 import { LoginDto } from "../dto/login.dto";
 import { JwtTokenService } from "@auth/infrastructure/jwtToken.service";
 import { BcryptHashService } from "@auth/infrastructure/bcryptHash.service";
-import { GetUserByIdUseCase } from "@user/application/useCases/getUserByIdUseCase";
-import { UpdateUserUseCase } from "@user/application/useCases/updateUserUseCase";
+import { GetUserByIdUseCase } from "@user/application/useCases/getUserById.usecase";
+import { UpdateUserUseCase } from "@user/application/useCases/updateUser.usecase";
 
 @Injectable()
 export class AuthenticateUserUseCase {

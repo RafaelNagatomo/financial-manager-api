@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, Put, Req, UseGuards } from '@nestjs/common
 import { JwtAuthGuard } from '@guards/jwtAuthGuard';
 import { UserResponseDto } from '../dto/userResponse.dto';
 import { UpdateUserDto } from '@user/application/dto/updateUser.dto';
-import { UpdateUserUseCase } from '@user/application/useCases/updateUserUseCase';
+import { UpdateUserUseCase } from '@user/application/useCases/updateUser.usecase';
 import { CreateUserUseCase } from '@user/application/useCases/createUser.usecase';
 import { CreateUserDto } from '@user/application/dto/createUser.dto';
 
@@ -13,7 +13,7 @@ export class UserController {
     private readonly updateUser: UpdateUserUseCase,
   ) {}
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('/')
   public async getAll(@Req() req): Promise<UserResponseDto[]> {
     console.log("req: ", req.user)
