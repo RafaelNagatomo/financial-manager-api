@@ -1,9 +1,9 @@
 import { ConflictException, Injectable } from "@nestjs/common";
-import { UserRepository } from "@user/infrastructure/user.repository";
 import { User } from "@user/domain/user.entity";
 import { LoginDto } from "../dto/login.dto";
 import { JwtTokenService } from "@auth/infrastructure/jwtToken.service";
 import { BcryptHashService } from "@auth/infrastructure/bcryptHash.service";
+import { GetUserByIdUseCase } from "@user/application/useCases/getUserByIdUseCase";
 import { UpdateUserUseCase } from "@user/application/useCases/updateUserUseCase";
 
 @Injectable()
@@ -11,12 +11,12 @@ export class AuthenticateUserUseCase {
   constructor (
     private readonly hashService: BcryptHashService,
     private readonly tokenService: JwtTokenService,
-    private readonly userRepository: UserRepository,
+    private readonly getUserById: GetUserByIdUseCase,
     private readonly updateUser: UpdateUserUseCase,
   ) {}
 
   public async validadeUser(email: string): Promise<User> {
-    const userAlreadyExists = await this.userRepository.getByEmail(email);
+    const userAlreadyExists = await this.getUserById.execute(email);
 
     if (!userAlreadyExists) {
       throw new ConflictException('User or password incorrect!');

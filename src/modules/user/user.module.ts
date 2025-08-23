@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { UserController } from './presentation/user.controller';
+import { UserController } from './presentation/controller/user.controller';
 import { CreateUserUseCase } from './application/useCases/createUser.usecase';
 import { UserRepository } from './infrastructure/user.repository';
 import { UpdateUserUseCase } from './application/useCases/updateUserUseCase';
+import { GetUserByIdUseCase } from './application/useCases/getUserByIdUseCase';
 
 @Module({
   controllers: [UserController],
@@ -10,9 +11,10 @@ import { UpdateUserUseCase } from './application/useCases/updateUserUseCase';
     UserRepository,
     CreateUserUseCase,
     UpdateUserUseCase,
+    GetUserByIdUseCase,
   ],
   exports: [
-    UserRepository,
+    GetUserByIdUseCase,
     UpdateUserUseCase,
   ],
 })

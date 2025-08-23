@@ -26,10 +26,10 @@ export class CreateUserUseCase {
     await this.validadeEmail(email);
     createUserDto.password = await this.generatePasswordHash(password);
     
-    return this.userRepository.create(createUserDto);
+    return await this.userRepository.create(createUserDto);;
   }
 
-  public async gettAll(): Promise<UserDomainEntity[]> {
+  public async getAll(): Promise<UserDomainEntity[]> {
     return await this.userRepository.getAll();
   }
 }

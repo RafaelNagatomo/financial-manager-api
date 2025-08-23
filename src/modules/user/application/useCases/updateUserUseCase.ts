@@ -17,7 +17,7 @@ export class UpdateUserUseCase {
     return userAlreadyExists;
   }
 
-  public async execute(updateUserDto: UpdateUserDto): Promise<Partial<UserDomainEntity>> {
+  public async execute(updateUserDto: UpdateUserDto): Promise<UserDomainEntity> {
     const { id } = updateUserDto;
 
     const validatedUser = await this.validadeUser(id);
@@ -27,8 +27,7 @@ export class UpdateUserUseCase {
     if (!updatedUser) {
       throw new ConflictException('User not found!');
     };
-    const { password, refreshToken, ...filteredUser } = updatedUser;
 
-    return filteredUser;
+    return updatedUser;
   }
 }
