@@ -1,17 +1,18 @@
 import { ConflictException, Injectable } from "@nestjs/common";
-import { compare } from "bcrypt";
 import { UserRepository } from "@user/infrastructure/user.repository";
 import { User } from "@user/domain/user.entity";
 import { LoginDto } from "../dto/login.dto";
 import { JwtTokenService } from "@auth/infrastructure/jwtToken.service";
 import { BcryptHashService } from "@auth/infrastructure/bcryptHash.service";
+import { UpdateUserUseCase } from "@user/application/useCases/updateUserUseCase";
 
 @Injectable()
 export class AuthenticateUserUseCase {
   constructor (
-    private readonly userRepository: UserRepository,
     private readonly hashService: BcryptHashService,
     private readonly tokenService: JwtTokenService,
+    private readonly userRepository: UserRepository,
+    private readonly updateUser: UpdateUserUseCase,
   ) {}
 
   public async validadeUser(email: string): Promise<User> {
@@ -44,7 +45,7 @@ export class AuthenticateUserUseCase {
     const accessToken = this.tokenService.generateAccessToken(user);
     const refreshToken = this.tokenService.generateRefreshToken(user);
 
-    // save refreshToken by updateUser
+    this.updateUser.execute({ ...user, refreshToken });
 
     return { accessToken, refreshToken }
   }

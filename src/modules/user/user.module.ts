@@ -11,6 +11,9 @@ import { UpdateUserUseCase } from './application/useCases/updateUserUseCase';
     CreateUserUseCase,
     UpdateUserUseCase,
   ],
-  exports: [UserRepository],
+  exports: [
+    UserRepository,
+    UpdateUserUseCase,
+  ],
 })
 export class UserModule {}
