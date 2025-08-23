@@ -1,14 +1,18 @@
 import { ConflictException, Injectable } from "@nestjs/common";
 import { compare } from "bcrypt";
-import { sign } from "jsonwebtoken";
 import { UserRepository } from "@user/infrastructure/user.repository";
 import { User } from "@user/domain/user.entity";
 import { LoginDto } from "../dto/login.dto";
-import { JwtConfig } from "@config/jwt.config";
+import { JwtTokenService } from "@auth/infrastructure/jwtToken.service";
+import { BcryptHashService } from "@auth/infrastructure/bcryptHash.service";
 
 @Injectable()
 export class AuthenticateUserUseCase {
-  constructor (private readonly userRepository: UserRepository) {}
+  constructor (
+    private readonly userRepository: UserRepository,
+    private readonly hashService: BcryptHashService,
+    private readonly tokenService: JwtTokenService,
+  ) {}
 
   public async validadeUser(email: string): Promise<User> {
     const userAlreadyExists = await this.userRepository.findByEmail(email);
@@ -21,30 +25,13 @@ export class AuthenticateUserUseCase {
   }
 
   public async validadePassword(password: string, user: User): Promise<boolean> {
-    const passwordMatch = await compare(password, user.password);
+    const passwordMatch = await this.hashService.compare(password, user.password);
 
     if (!passwordMatch) {
       throw new ConflictException('User or password incorrect!');
     };
 
     return passwordMatch
-  }
-
-  public tokenGenerator(user: User): string {
-    const { id, email, superUser, timeZone } = user;
-
-    const payload = {
-      email: email,
-      superUser: superUser,
-      timeZone: timeZone,
-    }
-
-    const token = sign(payload, JwtConfig.secret, {
-      subject: id,
-      expiresIn: JwtConfig.expiresIn,
-    });
-
-    return token;
   }
 
   public async execute(loginDto: LoginDto) {
@@ -54,7 +41,11 @@ export class AuthenticateUserUseCase {
 
     if (!isValidated) return;
 
-    const token = this.tokenGenerator(user);
-    return { token }
+    const accessToken = this.tokenService.generateAccessToken(user);
+    const refreshToken = this.tokenService.generateRefreshToken(user);
+
+    // save refreshToken by updateUser
+
+    return { accessToken, refreshToken }
   }
 }

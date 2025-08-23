@@ -5,6 +5,8 @@ import { AuthController } from './presentation/auth.controller';
 import { AuthenticateUserUseCase } from './application/useCases/AutenticateUserUseCase';
 import { UserModule } from '@user/user.module';
 import { JwtStrategy } from '@strategies/jwtStrategy';
+import { BcryptHashService } from './infrastructure/bcryptHash.service';
+import { JwtTokenService } from './infrastructure/jwtToken.service';
 
 @Module({
   imports: [
@@ -13,6 +15,11 @@ import { JwtStrategy } from '@strategies/jwtStrategy';
     UserModule,
   ],
   controllers: [AuthController],
-  providers: [AuthenticateUserUseCase, JwtStrategy],
+  providers: [
+    AuthenticateUserUseCase,
+    JwtStrategy,
+    BcryptHashService,
+    JwtTokenService,
+  ],
 })
 export class AuthModule {}
