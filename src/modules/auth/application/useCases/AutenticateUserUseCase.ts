@@ -31,9 +31,15 @@ export class AuthenticateUserUseCase {
   }
 
   public tokenGenerator(user: User): string {
-    const { id } = user;
+    const { id, email, superUser, timeZone } = user;
 
-    const token = sign({}, JwtConfig.secret, {
+    const payload = {
+      email: email,
+      superUser: superUser,
+      timeZone: timeZone,
+    }
+
+    const token = sign(payload, JwtConfig.secret, {
       subject: id,
       expiresIn: JwtConfig.expiresIn,
     });
