@@ -25,9 +25,9 @@ export class UserResponseDto {
     this.email = user.email;
   }
 
-  static serializer(user: User): UserResponseDto;
-  static serializer(users: User[]): UserResponseDto[];
-  static serializer(userOrUsers: User | User[]): UserResponseDto | UserResponseDto[] {
+  static mapper(user: User): UserResponseDto;
+  static mapper(users: User[]): UserResponseDto[];
+  static mapper(userOrUsers: User | User[]): UserResponseDto | UserResponseDto[] {
     if (Array.isArray(userOrUsers)) {
       return userOrUsers.map((u) => new UserResponseDto(u));
     }
