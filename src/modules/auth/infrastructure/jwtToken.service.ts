@@ -1,12 +1,12 @@
-import { ITokenService } from '@auth/domain/tokenService.interface';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtConfig } from '@config/jwt.config';
-import { Injectable } from '@nestjs/common';
+import { sign, verify } from 'jsonwebtoken';
 import { User } from '@user/domain/user.entity';
-import { sign } from 'jsonwebtoken';
+import { ITokenService } from '@auth/domain/jwtTokenService.interface';
 
 @Injectable()
 export class JwtTokenService implements ITokenService {
-  generateAccessToken(user: User): string {
+  public generateAccessToken(user: User): string {
     const { id, email, superUser, timeZone } = user;
 
     const payload = {
@@ -21,10 +21,19 @@ export class JwtTokenService implements ITokenService {
     });
   }
 
-  generateRefreshToken(user: User): string {
+  public generateRefreshToken(user: User): string {
     return sign({}, JwtConfig.refreshSecret, {
       subject: user?.id,
       expiresIn: JwtConfig.refreshExpiresIn,
     });
+  }
+
+  public validateRefreshToken(token: string): boolean {
+    try {
+      verify(token, JwtConfig.refreshSecret);
+      return true;
+    } catch (error) {
+      throw new UnauthorizedException(`Invalid token: ${error.message}`);
+    }
   }
 }

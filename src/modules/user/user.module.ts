@@ -3,6 +3,7 @@ import { UserController } from './presentation/user.controller';
 import { CreateUserUseCase } from './application/useCases/createUser.usecase';
 import { UserRepository } from './infrastructure/user.repository';
 import { UpdateUserUseCase } from './application/useCases/updateUser.usecase';
+import { GetUserByEmailUseCase } from './application/useCases/getUserByEmail.usecase';
 import { GetUserByIdUseCase } from './application/useCases/getUserById.usecase';
 
 @Module({
@@ -11,11 +12,13 @@ import { GetUserByIdUseCase } from './application/useCases/getUserById.usecase';
     UserRepository,
     CreateUserUseCase,
     UpdateUserUseCase,
+    GetUserByEmailUseCase,
     GetUserByIdUseCase,
   ],
   exports: [
-    GetUserByIdUseCase,
     UpdateUserUseCase,
+    GetUserByEmailUseCase,
+    GetUserByIdUseCase,
   ],
 })
 export class UserModule {}

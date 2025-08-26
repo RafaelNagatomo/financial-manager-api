@@ -3,10 +3,10 @@ import { UserRepository } from '../../infrastructure/user.repository';
 import { User as UserDomainEntity } from '../../domain/user.entity';
 
 @Injectable()
-export class GetUserByIdUseCase {
+export class GetUserByEmailUseCase {
   constructor(private readonly userRepository: UserRepository) {}
 
-  public async execute(id: string): Promise<UserDomainEntity | null> {
-    return await this.userRepository.getById(id);
+  public async execute(email: string): Promise<UserDomainEntity | null> {
+    return await this.userRepository.getByEmail(email);
   }
 }
