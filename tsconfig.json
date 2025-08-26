@@ -19,9 +19,9 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@config/*": ["src/shared/config/*"],
-      "@strategies/*": ["src/shared/infrastructure/strategies/*"],
-      "@filters/*": ["src/shared/presentation/filters/*"],
-      "@guards/*": ["src/shared/presentation/guards/*"],
+      "@strategies/*": ["src/shared/strategies/*"],
+      "@filters/*": ["src/shared/filters/*"],
+      "@guards/*": ["src/shared/guards/*"],
       "@auth/*": ["src/modules/auth/*"],
       "@user/*": ["src/modules/user/*"],
     },

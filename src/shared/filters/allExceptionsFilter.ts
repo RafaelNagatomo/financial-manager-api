@@ -11,7 +11,14 @@ import { ValidationError } from 'class-validator';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-  catch(exception: any, host: ArgumentsHost) {
+  private formatValidationErrors(errors: ValidationError[]): any[] {
+    return errors.map((error) => ({
+      field: error.property,
+      errors: Object.values(error.constraints || {}),
+    }));
+  }
+
+  public catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
@@ -19,16 +26,16 @@ export class AllExceptionsFilter implements ExceptionFilter {
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
     let message: string | string[] = 'Internal server error';
 
-    if (exception instanceof HttpException) {
-      status = exception.getStatus();
-      const res = exception.getResponse();
+    // if (exception instanceof HttpException) {
+    //   status = exception.getStatus();
+    //   const res = exception.getResponse();
 
-      if (typeof res === 'string') {
-        message = res;
-      } else if (typeof res === 'object' && (res as any).message) {
-        message = (res as any).message;
-      }
-    }
+    //   if (typeof res === 'string') {
+    //     message = res;
+    //   } else if (typeof res === 'object' && (res as any).message) {
+    //     message = (res as any).message;
+    //   }
+    // }
 
     if (Array.isArray(exception?.message)) {
       const validationErrors = exception.message;
@@ -44,12 +51,5 @@ export class AllExceptionsFilter implements ExceptionFilter {
       method: request.method,
       message,
     });
-  }
-
-  private formatValidationErrors(errors: ValidationError[]): any[] {
-    return errors.map((error) => ({
-      field: error.property,
-      errors: Object.values(error.constraints || {}),
-    }));
   }
 }

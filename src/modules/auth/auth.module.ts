@@ -4,7 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './presentation/auth.controller';
 import { AuthenticateUserUseCase } from './application/useCases/autenticateUserUseCase';
 import { UserModule } from '@user/user.module';
-import { JwtStrategy } from '@strategies/jwtStrategy';
+import { JwtStrategy } from 'src/shared/strategies/jwtStrategy';
 import { BcryptHashService } from './infrastructure/bcryptHash.service';
 import { JwtTokenService } from './infrastructure/jwtToken.service';
 import { RefreshAccessTokenUseCase } from './application/useCases/refreshAccessTokenUseCase';

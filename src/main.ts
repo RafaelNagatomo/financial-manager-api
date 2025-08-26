@@ -2,7 +2,7 @@ import { AppModule } from './app.module';
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { ExceptionFilter, ValidationPipe } from '@nestjs/common';
-import { AllExceptionsFilter } from '@filters/allExceptionsFilter';
+import { AllExceptionsFilter } from 'src/shared/filters/allExceptionsFilter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
