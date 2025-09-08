@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from "@nestjs/common";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { User } from "@user/domain/user.entity";
 import { LoginDto } from "../dto/login.dto";
 import { tokensResponseDto } from "@auth/application/dto/tokensResponse.dto";
@@ -20,7 +20,7 @@ export class AuthenticateUserUseCase {
     const userExists = await this.getUserByEmail.execute(email);
 
     if (!userExists) {
-      throw new ConflictException('User or password incorrect!');
+      throw new UnauthorizedException('User or password incorrect');
     };
 
     return userExists;
@@ -30,7 +30,7 @@ export class AuthenticateUserUseCase {
     const passwordMatch = await this.hashService.compare(password, user.password);
 
     if (!passwordMatch) {
-      throw new ConflictException('User or password incorrect!');
+      throw new UnauthorizedException('User or password incorrect');
     };
   }
 

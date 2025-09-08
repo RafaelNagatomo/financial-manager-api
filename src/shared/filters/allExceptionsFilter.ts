@@ -1,11 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import {
-  ExceptionFilter,
-  Catch,
-  ArgumentsHost,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
+import { ExceptionFilter, Catch, ArgumentsHost, HttpStatus, HttpException } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { ValidationError } from 'class-validator';
 
@@ -26,21 +20,17 @@ export class AllExceptionsFilter implements ExceptionFilter {
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
     let message: string | string[] = 'Internal server error';
 
-    // if (exception instanceof HttpException) {
-    //   status = exception.getStatus();
-    //   const res = exception.getResponse();
+    if (exception instanceof HttpException) {
+      status = exception.getStatus();
+      const res = exception.getResponse();
 
-    //   if (typeof res === 'string') {
-    //     message = res;
-    //   } else if (typeof res === 'object' && (res as any).message) {
-    //     message = (res as any).message;
-    //   }
-    // }
-
+      message = (typeof res === 'string')
+        ? res
+        : (res as any).message || (res as any).error || message;
+    }
+    
     if (Array.isArray(exception?.message)) {
-      const validationErrors = exception.message;
-
-      message = this.formatValidationErrors(validationErrors);
+      message = this.formatValidationErrors(exception.message);
       status = HttpStatus.BAD_REQUEST;
     }
 
@@ -49,7 +39,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       timestamp: new Date().toISOString(),
       path: request.url,
       method: request.method,
-      message,
+      message: message,
     });
   }
 }

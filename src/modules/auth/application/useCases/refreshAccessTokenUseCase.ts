@@ -18,7 +18,7 @@ export class RefreshAccessTokenUseCase {
     const userExists = await this.getUserById.execute(id);
 
     if (!userExists || userExists?.refreshToken !== refreshToken) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException("Invalid token");
     }
 
     return userExists;
