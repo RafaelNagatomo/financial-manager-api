@@ -27,6 +27,12 @@ class TenantEntity extends BaseEntity {
   + transferOwnership()
 }
 
+class Auth {
+  + forgotPassword()
+  + authenticate()
+  + refreshToken()
+}
+
 class User {
   - id: UUID
   - isActive: boolean
@@ -42,8 +48,6 @@ class User {
   - refreshToken: string
   + createTenant()
   + changePassword()
-  + forgotPassword()
-  + authenticate()
   + fullName(): string
 }
 

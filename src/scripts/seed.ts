@@ -18,10 +18,10 @@ async function seedUser() {
   console.log('✅ Database connected');
 
   const userData = {
-    firstName: 'Rafael',
-    lastName: 'Nagatomo',
+    firstName: 'admin',
+    lastName: 'admin',
     timeZone: 'America/Sao_Paulo',
-    email: 'rafael@gmail.com',
+    email: 'admin@email.com',
     password: '123456',
   };
   
